@@ -26,6 +26,8 @@ void *cam = NULL;
 
 void display();
 
+void setup_lighting();
+
 int main(int argc, char **argv)
 {
 
@@ -41,12 +43,19 @@ int main(int argc, char **argv)
     glCullFace(GL_BACK);
     glDepthRange(0.0f, 1.0f);
 
+    setup_lighting();
+
     cam = (Camera *)init_camera();
     init_obj_vecs();
     init_textures_vec();
 
-
+// Índices livres: 1,8, 9, 10, 12, 15, 16, 25, 26, 
+// 27, 28, 29, 30, 31
     load_obj_display("./models/geladeira.obj", 6);
+
+    load_obj_display("./models/ventilador/helice.obj", 4);
+    load_obj_display("./models/ventilador/base_sem_helice.obj", 5);
+
     load_obj_display("./models/lixinho.obj", 11);
     load_obj_display("./models/portaFechada.obj", 13);
     load_obj_display("./models/janelaFechada.obj", 14);
@@ -59,11 +68,17 @@ int main(int argc, char **argv)
     load_obj_display("./models/janela/janela.obj", 23);
     load_obj_display("./models/janela/janela2.obj", 24);
 
+    // load_obj_display("./models/luminariaclara.obj", 30);
+    load_obj_display("./models/luminaria.obj", 30);
+
     load_texture("textures/quadro_museu2.jpeg", 0);
-    load_texture("textures/chao.jpeg", 2);
-    load_texture("textures/parede-3.jpg", 3);
+    load_texture("textures/chao2.jpg", 2);
+    load_texture("textures/parede2.jpg", 3);
+    load_texture("textures/texturademadeira.jpg", 4);
+    load_texture("textures/porta.jpg", 5);
     load_texture("textures/quadro_museu3.jpeg", 6);
     load_texture("textures/quadro_museu.jpg", 7);
+
 
     glutDisplayFunc(display);
     glutKeyboardFunc(moveCam);
@@ -95,6 +110,15 @@ void display()
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+
+    //ventilador
+    glPushMatrix();
+    glEnable( GL_TEXTURE_2D );
+    glTranslatef (-18, 71, -10);
+    glScalef(4.0, 8.0, 4.0);
+    glRotatef(-180, 90, 0, 90);
+    draw_helix();
+    glPopMatrix();
     
     //casa
     draw_house();
@@ -114,6 +138,14 @@ void display()
     aply_texture(3);
     draw_objects(11, 0.5,  0.5, 0.5, 1);
     glDisable(GL_TEXTURE_2D);
+    glPopMatrix();
+
+    //luminaria
+    // no meio da sala
+    glPushMatrix();
+    glTranslatef(-5, 1, 0);
+    glScalef(7.0, 15.0, 10.0);
+    draw_objects(30, 3.0, 3.5, 4.5, 1);
     glPopMatrix();
 
     //porta
@@ -175,4 +207,33 @@ void display()
     glFlush();
     glutSwapBuffers();
     glutPostRedisplay();
+}
+
+void setup_lighting()
+{
+    float mat_specular[] = {1.0f, 1.0f, 1.0f}; //branco
+    float light_position[] = {0.0f, 18.0f, 0.0f, 1.0f};
+    float light_diffuse[] = {0.6f, 0.6f, 0.6f}; // lanterna clareando o ambiente
+
+    //luminaria
+    glMaterialfv(GL_LIGHT1, GL_SPECULAR, mat_specular);
+    glLightfv(GL_LIGHT1, GL_POSITION, light_position);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, light_diffuse);
+
+    //spot  
+    float spot_direction[] = {-0.7f, -0.5f, 0.0f};
+    float spot_cutoff[] = {30.0f};
+    float spot_position[] = {60, 15, 8, 1.0};
+    float spot_difuse[] = {1.0, 1.0, 1.0}; // luz branca do spot
+
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, spot_difuse);
+    glLightfv(GL_LIGHT0, GL_POSITION, spot_position);
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
+    glLightfv(GL_LIGHT0, GL_SPOT_CUTOFF, spot_cutoff);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
+
+    glEnable(GL_COLOR_MATERIAL);
 }
