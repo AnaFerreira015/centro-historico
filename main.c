@@ -49,10 +49,13 @@ int main(int argc, char **argv)
     init_obj_vecs();
     init_textures_vec();
 
-// Índices livres: 1,8, 9, 10, 12, 15, 16, 25, 26, 
+// Índices livres: 1,8, 9, 25, 26, 
 // 27, 28, 29, 30, 31
     load_obj_display("./models/geladeira.obj", 6);
-
+    load_obj_display("./models/Ar.obj", 10);
+    load_obj_display("./models/biro.obj", 16);
+    load_obj_display("./models/PC.obj", 15);
+    load_obj_display("./models/cadeira.obj", 12);
     load_obj_display("./models/ventilador/helice.obj", 4);
     load_obj_display("./models/ventilador/base_sem_helice.obj", 5);
 
@@ -72,12 +75,18 @@ int main(int argc, char **argv)
     load_obj_display("./models/luminaria.obj", 30);
 
     load_texture("textures/quadro_museu2.jpeg", 0);
+    load_texture("textures/ar-textura.png", 1);
     load_texture("textures/chao2.jpg", 2);
     load_texture("textures/parede2.jpg", 3);
     load_texture("textures/texturademadeira.jpg", 4);
     load_texture("textures/porta.jpg", 5);
     load_texture("textures/quadro_museu3.jpeg", 6);
     load_texture("textures/quadro_museu.jpg", 7);
+    load_texture("textures/madeira.jpg", 8);
+    load_texture("textures/cadeira.jpg", 9);
+    load_texture("textures/parede-3.jpg", 10);
+    load_texture("textures/pilastra.jpg", 11);
+    load_texture("textures/porcelanato.jpg", 12);
 
 
     glutDisplayFunc(display);
@@ -140,17 +149,71 @@ void display()
     glDisable(GL_TEXTURE_2D);
     glPopMatrix();
 
+    //pilastra
+    glPushMatrix();
+    glEnable( GL_TEXTURE_2D ); 
+
+    glTranslatef(10, 1.5, 54);
+    glScalef(5, 12.0, 10.0);
+    aply_texture(11);
+    draw_objects(11, 255,  255, 255, 1);
+    glDisable(GL_TEXTURE_2D);
+    glPopMatrix();
+
     //luminaria
     // no meio da sala
     glPushMatrix();
-    glTranslatef(-5, 1, 0);
+    glEnable( GL_TEXTURE_2D ); 
+    glTranslatef(-20, 1, -60);
     glScalef(7.0, 15.0, 10.0);
+    glRotatef(120,0,1,0);
+    aply_texture(10);
     draw_objects(30, 3.0, 3.5, 4.5, 1);
+    glDisable(GL_TEXTURE_2D);
     glPopMatrix();
 
     //porta
     glPushMatrix();
     draw_door();
+    glPopMatrix();
+
+    // ar-condicionado
+    glPushMatrix();
+    glEnable( GL_TEXTURE_2D ); 
+    glTranslatef ( -65 ,30.5 , 10 ) ;
+    glScalef(5, 5, 5);
+    // glRotatef(20,0,1,1);
+    aply_texture(1);
+    draw_objects(10, 255, 255, 255, 0);
+    glDisable(GL_TEXTURE_2D);
+    glPopMatrix();
+
+    // mesa
+    glPushMatrix();
+    glEnable( GL_TEXTURE_2D ); 
+    glTranslatef ( -65 ,1 , 40 ) ;
+    glScalef(5, 8, 9);
+    aply_texture(8);
+    draw_objects(16, 1, 0.5, 0.0, 0);
+    glDisable(GL_TEXTURE_2D);
+    glPopMatrix();
+
+    // PC
+    glPushMatrix();
+    glTranslatef ( 10 ,7 , 40 ) ;
+    glScalef(8, 9, 12);
+    glRotatef(90, 0, 1, 0);
+    draw_objects(15, 0.6, 0.6, 0.6, 0);
+    glPopMatrix();
+
+    // cadeira
+    glPushMatrix();
+    glEnable( GL_TEXTURE_2D ); 
+    glTranslatef ( -65 ,1 , 40 ) ;
+    glScalef(5, 8, 9);
+    aply_texture(9);
+    draw_objects(12, 0.0, 1.0, 0.0, 0);
+    glDisable(GL_TEXTURE_2D);
     glPopMatrix();
 
     //quadro 1
@@ -221,9 +284,9 @@ void setup_lighting()
     glLightfv(GL_LIGHT1, GL_DIFFUSE, light_diffuse);
 
     //spot  
-    float spot_direction[] = {-0.7f, -0.5f, 0.0f};
-    float spot_cutoff[] = {30.0f};
-    float spot_position[] = {60, 15, 8, 1.0};
+    float spot_direction[] = {-0.7f, -0.7f, 0.4f};
+    float spot_cutoff[] = {20.0f};
+    float spot_position[] = {20, 20, -50, 1.0};
     float spot_difuse[] = {1.0, 1.0, 1.0}; // luz branca do spot
 
     glLightfv(GL_LIGHT0, GL_DIFFUSE, spot_difuse);

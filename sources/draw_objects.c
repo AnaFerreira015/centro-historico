@@ -149,7 +149,8 @@ void draw_helix() {
     glScalef(1.5, 1.5, 1.2);
     glRotatef(180, 1, 0, 0);//rotaciona o ventilador pro plano xy
 
-    HEX_ANGLE += 4;//gira um grau a cada redisplay
+    //controla a velocidade do ventilador
+    HEX_ANGLE += 3;//gira um grau a cada redisplay
     HEX_ANGLE %= 360;//mantém o angulo entre 0 e 360
     glRotatef(HEX_ANGLE, 0, 1, 0);//Gira no Y pq  ventilador original ta no plano XZ e não no XY
 
@@ -172,7 +173,7 @@ void draw_house()
     glPushMatrix();
     glEnable(GL_TEXTURE_2D);
     glTranslatef(0, 0.5, 0);
-    aply_texture(2);
+    aply_texture(12);
     draw_objects(17, 1, 1, 1, 1);
     glDisable(GL_TEXTURE_2D);
     glPopMatrix();
@@ -228,10 +229,10 @@ void draw_fridge()
     glPushMatrix();
     glEnable(GL_TEXTURE_2D);
     glTranslatef(30, 1, -30);
-    aply_texture(3);
+    aply_texture(11);
     glRotatef(90,0,1,0);
     glScalef(9.0, 20.0, 14.0);
-    draw_objects(6, 0.75, 0.75, 0.75, 1);
+    draw_objects(6, 255, 255, 255, 1);
     glDisable(GL_TEXTURE_2D);
     glPopMatrix();
 }
