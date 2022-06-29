@@ -28,7 +28,7 @@ void draw_axis();
 void draw_cube();
 
 /*Desenha o ventilador girando*/
-// void draw_helix();
+void draw_helix();
 
 /*Desenha a porta dependendo do estado dela*/
 void draw_door();
